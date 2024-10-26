@@ -53,8 +53,8 @@
                             <a class="nav-link  text-white" href="users/login.html">Войти</a>
                         </li>
                         <li class="nav-item dropdown ">
-                            <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white" role="button" href="{% url 'goods:catalog' %}" 
+                            data-bs-toggle="dropdown" aria-expanded="false">
                                 Мой профиль
                             </a>
                             <ul class="dropdown-menu">
@@ -90,13 +90,13 @@
                             height="16">
                     </button>
                     <ul class="dropdown-menu bg-dark" data-bs-theme="dark">
-                        <li><a class="dropdown-item text-white" href="goods/catalog.html">Все товары</a></li>
-                        <li><a class="dropdown-item text-white" href="goods/catalog.html">Кухня</a></li>
-                        <li><a class="dropdown-item text-white" href="goods/catalog.html">Спальня</a></li>
-                        <li><a class="dropdown-item text-white" href="goods/catalog.html">Гостинная</a></li>
-                        <li><a class="dropdown-item text-white" href="goods/catalog.html">Офис</a></li>
-                        <li><a class="dropdown-item text-white" href="goods/catalog.html">Фурнитура</a></li>
-                        <li><a class="dropdown-item text-white" href="goods/catalog.html">Декор</a></li>
+                        <li><a class="dropdown-item text-white" href="{% url 'goods:catalog' %}">Все товары</a></li>
+                        <li><a class="dropdown-item text-white" href="{% url 'goods:catalog' %}">Кухня</a></li>
+                        <li><a class="dropdown-item text-white" href="{% url 'goods:catalog' %}">Спальня</a></li>
+                        <li><a class="dropdown-item text-white" href="{% url 'goods:catalog' %}">Гостинная</a></li>
+                        <li><a class="dropdown-item text-white" href="{% url 'goods:catalog' %}">Офис</a></li>
+                        <li><a class="dropdown-item text-white" href="{% url 'goods:catalog' %}">Фурнитура</a></li>
+                        <li><a class="dropdown-item text-white" href="{% url 'goods:catalog' %}">Декор</a></li>
                     </ul>
                 </div>
                 <!-- Значек корзины, вызывает модальное окно -->
