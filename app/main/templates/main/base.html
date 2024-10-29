@@ -91,11 +91,6 @@
                             height="16">
                     </button>
                     <ul class="dropdown-menu bg-dark" data-bs-theme="dark">
-                       
-                        {% comment %} {% for category in categories %}
-                            <li><a class="dropdown-item text-white" href="{% url 'goods:catalog' %}">{{ category }}</a></li>
-                        {% endfor %} {% endcomment %}
-
                             
                         {% categories_tag as categories %}
                         {% for category in categories %}
