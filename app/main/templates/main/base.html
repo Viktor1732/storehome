@@ -54,7 +54,7 @@
                             <a class="nav-link  text-white" href="users/login.html">Войти</a>
                         </li>
                         <li class="nav-item dropdown ">
-                            <a class="nav-link dropdown-toggle text-white" role="button" href="{% url 'goods:catalog' %}" 
+                            <a class="nav-link dropdown-toggle text-white" role="button" href="#" 
                             data-bs-toggle="dropdown" aria-expanded="false">
                                 Мой профиль
                             </a>
@@ -94,7 +94,7 @@
                             
                         {% categories_tag as categories %}
                         {% for category in categories %}
-                            <li><a class="dropdown-item text-white" href="{% url 'goods:catalog' %}">{{ category }}</a></li>
+                            <li><a class="dropdown-item text-white" href="{% url 'goods:catalog' category.slug %}">{{ category }}</a></li>
                         {% endfor %} 
 
                     </ul>

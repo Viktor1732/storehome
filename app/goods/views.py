@@ -1,9 +1,13 @@
 from django.shortcuts import render
-from goods.models import Products
+from goods.models import Products, Categories
 
 
-def catalog(request):
-    goods = Products.objects.all()
+def catalog(request, category_slug):
+    if category_slug == "all":
+        goods = Products.objects.all()
+    else:
+        goods = Products.objects.filter(category__slug=category_slug)
+
     context = {
         "title": "StoreHome - Каталог",
         "goods": goods,
