@@ -3,7 +3,11 @@ from django.core.paginator import Paginator
 from goods.models import Products, Categories
 
 
-def catalog(request, category_slug, page=1):
+def catalog(request, category_slug):
+
+    # Получаем значение по ключу: page. Если ключа не будет, то значение по умолчанию 1
+    page = request.GET.get("page", 1)
+
     if category_slug == "all":
         goods = Products.objects.all()
     else:
