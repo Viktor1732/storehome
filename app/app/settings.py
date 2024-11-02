@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres', # Для токо чтобы подключить полнотекстовый поиск в Postgres SQL
 
     "debug_toolbar",
 
