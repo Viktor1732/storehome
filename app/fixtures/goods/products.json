@@ -8,7 +8,7 @@
         "description": "Комплект из трёх стульев и дизайнерский столик для гостинной комнаты.",
         "image": "goods_images/set_of_tea_table_and_three_chairs.jpg",
         "price": "150.00",
-        "discount": "0.00",
+        "discount": "10.00",
         "quatity": 2,
         "category": 9
     }
@@ -50,7 +50,7 @@
         "description": "Кухонный стол для обеда с встроенной раковиной и стульями.",
         "image": "goods_images/kitchen_table.jpg",
         "price": "635.00",
-        "discount": "0.00",
+        "discount": "20.00",
         "quatity": 1,
         "category": 11
     }
@@ -62,7 +62,7 @@
         "name": "Кухонный стол с встройкой",
         "slug": "kuhonnyj-stol-s-vstrojkoj",
         "description": "Кухонный стол со встроенной плитой и раковиной. Много полок и вообще красивый.",
-        "image": "goods_images/kitchen_table_2_h8bwVLK.jpg",
+        "image": "goods_images/kitchen_table_2.jpg",
         "price": "430.00",
         "discount": "0.00",
         "quatity": 2,
@@ -120,7 +120,7 @@
         "description": "Описание товара, про то какой он классный, но это стул, что тут сказать...\"",
         "image": "goods_images/office_chair.jpg",
         "price": "30.00",
-        "discount": "0.00",
+        "discount": "15.00",
         "quatity": 4,
         "category": 8
     }
@@ -134,7 +134,7 @@
         "description": "Растение для украшения вашего интерьера подарит свежесть и безмятежность обстановке.",
         "image": "goods_images/plants.jpg",
         "price": "10.00",
-        "discount": "0.00",
+        "discount": "40.00",
         "quatity": 20,
         "category": 6
     }
@@ -146,7 +146,7 @@
         "name": "Цветок стилизированный",
         "slug": "cvetok-stilizirovannyj",
         "description": "Дизайнерский цветок (возможно искусственный) для украшения интерьера.\"",
-        "image": "goods_images/flower.jpg",
+        "image": "goods_images/flower_J26P3w2.jpg",
         "price": "15.00",
         "discount": "0.00",
         "quatity": 30,
@@ -162,7 +162,7 @@
         "description": "Столик, довольно странный на вид, но подходит для размещения рядом с кроватью.",
         "image": "goods_images/strange_table.jpg",
         "price": "25.00",
-        "discount": "0.00",
+        "discount": "50.00",
         "quatity": 5,
         "category": 10
     }
