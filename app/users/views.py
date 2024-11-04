@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from users.forms import UserLoginForm, UserRegistrationForm
@@ -52,4 +52,5 @@ def profile(request):
 
 
 def logout(request):
-    pass
+    auth.logout(request)
+    return redirect(reverse("main:index"))
