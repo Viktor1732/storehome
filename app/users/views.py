@@ -1,9 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from users.forms import UserLoginForm, UserRegistrationForm
+from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 
 
 def login(request):
@@ -44,13 +45,27 @@ def registration(request):
     return render(request, "users/registration.html", context=context)
 
 
+
+@login_required # ограничение доступа для неаутентифицированных пользователей
 def profile(request):
+    if request.POST:
+        form = UserProfileForm(
+            data=request.POST, instance=request.user, files=request.FILES
+        )
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("user:profile"))
+    else:
+        form = UserProfileForm(instance=request.user)
+
     context = {
         "title": "StoreHome - Profile",
+        "form": form,
     }
     return render(request, "users/profile.html", context=context)
 
 
+@login_required
 def logout(request):
     auth.logout(request)
     return redirect(reverse("main:index"))
