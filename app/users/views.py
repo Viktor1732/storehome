@@ -19,7 +19,7 @@ def login(request):
                 messages.success(request, f"Вы вошли в профиль как {username}!")
 
                 if request.POST.get("next", None):
-                    return HttpResponseRedirect(request.GET.get("next"))
+                    return HttpResponseRedirect(request.POST.get("next"))
 
                 return HttpResponseRedirect(reverse("main:index"))
     else:
