@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -16,6 +16,7 @@ def login(request):
             user = auth.authenticate(username=username, password=password)
             if user:
                 auth.login(request, user)
+                messages.success(request, f"Вы вошли в профиль как {username}!")
                 return HttpResponseRedirect(reverse("main:index"))
     else:
         form = UserLoginForm()
@@ -34,6 +35,10 @@ def registration(request):
             form.save()
             user = form.instance
             auth.login(request, user)
+            messages.success(
+                request,
+                f"Вы успешно зарегистрировались и вошли в профиль как {user.username}!",
+            )
             return HttpResponseRedirect(reverse("main:index"))
     else:
         form = UserRegistrationForm()
@@ -45,8 +50,7 @@ def registration(request):
     return render(request, "users/registration.html", context=context)
 
 
-
-@login_required # ограничение доступа для неаутентифицированных пользователей
+@login_required  # ограничение доступа для неаутентифицированных пользователей
 def profile(request):
     if request.POST:
         form = UserProfileForm(
@@ -68,4 +72,5 @@ def profile(request):
 @login_required
 def logout(request):
     auth.logout(request)
+    messages.success(request, f"Вы вышли из профиля!")
     return redirect(reverse("main:index"))
