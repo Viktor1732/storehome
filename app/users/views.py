@@ -18,9 +18,12 @@ def login(request):
                 auth.login(request, user)
                 messages.success(request, f"Вы вошли в профиль как {username}!")
 
-                if request.POST.get("next", None):
+                # Если параметр "next" существует и не равен маршруту выхода (logout), перенаправляем на указанную страницу
+                redirect_page = request.POST.get("next", None)
+                if redirect_page and redirect_page != reverse("user:logout"):
                     return HttpResponseRedirect(request.POST.get("next"))
 
+                # Если параметра "next" нет, перенаправляем на главную страницу
                 return HttpResponseRedirect(reverse("main:index"))
     else:
         form = UserLoginForm()
