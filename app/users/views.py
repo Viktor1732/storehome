@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+from carts.models import Cart
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 
 
@@ -14,9 +15,15 @@ def login(request):
             username = request.POST["username"]
             password = request.POST["password"]
             user = auth.authenticate(username=username, password=password)
+
+            session_key = request.session.session_key
+
             if user:
                 auth.login(request, user)
                 messages.success(request, f"Вы вошли в профиль как {username}!")
+
+                if session_key:
+                    Cart.objects.filter(session_key=session_key).update(user=user)
 
                 # Если параметр "next" существует и не равен маршруту выхода (logout), перенаправляем на указанную страницу
                 redirect_page = request.POST.get("next", None)
@@ -40,8 +47,15 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
+
+            session_key = request.session.session_key
+
             user = form.instance
             auth.login(request, user)
+
+            if session_key:
+                Cart.objects.filter(session_key=session_key).update(user=user)
+
             messages.success(
                 request,
                 f"Вы успешно зарегистрировались и вошли в профиль как {user.username}!",
