@@ -34,8 +34,8 @@ class Order(models.Model):
 
     class Meta:
         db_table = "order"
-        verbose_name = "Таблица"
-        verbose_name_plural = "Таблицы"
+        verbose_name = "Заказ"
+        verbose_name_plural = "Заказы"
 
     def __str__(self):
         return f"Заказ № {self.pk} | Покупатель: {self.user.last_name} {self.user.first_name}"  
