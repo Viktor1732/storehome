@@ -1,4 +1,5 @@
 from django.contrib import admin
+from orders.admin import OrderTabulareAdmin
 from carts.admin import CartTabAdmin
 from users.models import User
 
@@ -9,5 +10,5 @@ class AdminUser(admin.ModelAdmin):
     search_fields = ["username", "first_name", "last_name", "email"]
 
     # Указываем, что в админ-панели для модели будет использоваться инлайн-форма для отображения связанных объектов.
-    inlines = [CartTabAdmin, ]
+    inlines = [CartTabAdmin, OrderTabulareAdmin,]
     
