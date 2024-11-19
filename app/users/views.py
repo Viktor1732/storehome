@@ -24,7 +24,12 @@ def login(request):
                 auth.login(request, user)
                 messages.success(request, f"Вы вошли в профиль как {username}!")
 
-                if session_key:
+                if session_key:      
+                    # Удаление старыех авторизованных пользовательских корзин
+                    forgot_carts = Cart.objects.filter(user=user)
+                    if forgot_carts.exists():
+                        forgot_carts.delete()
+                    # Добавление новой пользовательской корзины из ананимной сессии
                     Cart.objects.filter(session_key=session_key).update(user=user)
 
                 # Если параметр "next" существует и не равен маршруту выхода (logout), перенаправляем на указанную страницу

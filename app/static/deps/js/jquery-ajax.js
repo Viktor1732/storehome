@@ -1,6 +1,6 @@
 // Когда html документ готов (прорисован)
 $(document).ready(function () {
-    
+
     // берем в переменную элемент разметки с id jq-notification для оповещений от ajax
     var successMessage = $("#jq-notification");
 
@@ -13,7 +13,7 @@ $(document).ready(function () {
         var goodsInCartCount = $("#goods-in-cart-count");
         // Извлекаем текст из элемента и преобразуем его в целое число
         var cartCount = parseInt(goodsInCartCount.text() || 0);
- 
+
         // Получаем id товара из атрибута data-product-id
         var product_id = $(this).data("product-id");
 
@@ -111,7 +111,7 @@ $(document).ready(function () {
     // Обработчик события для уменьшения значения
     $(document).on("click", ".decrement", function () {
         // Из атрибута href берем ссылку на контроллер django
-        var url= $(this).attr("href");
+        var url = $(this).attr("href");
         // Берем id корзины из атрибута data-cart-id
         var cartID = $(this).data("cart-id");
         // Ищем ближайшеий input с количеством 
@@ -130,7 +130,7 @@ $(document).ready(function () {
     // Обработчик события для увеличения значения
     $(document).on("click", ".increment", function () {
         // Из атрибута href берем ссылку на контроллер django
-        var url= $(this).attr("href");
+        var url = $(this).attr("href");
         // Берем id корзины из атрибута data-cart-id
         var cartID = $(this).data("cart-id");
         // Ищем ближайшеий input с количеством 
@@ -156,12 +156,12 @@ $(document).ready(function () {
             },
 
             success: function (data) {
-                 // Сообщение
+                // Сообщение
                 successMessage.html(data.message);
                 successMessage.fadeIn(400);
-                 // Через 7сек убираем сообщение
+                // Через 7сек убираем сообщение
                 setTimeout(function () {
-                     successMessage.fadeOut(400);
+                    successMessage.fadeOut(400);
                 }, 7000);
 
                 // Изменяем количество товаров в корзине
@@ -210,6 +210,26 @@ $(document).ready(function () {
             $("#deliveryAddressField").show();
         } else {
             $("#deliveryAddressField").hide();
+        }
+    });
+
+    // Форматирования ввода номера телефона в форме (xxx) xxx-хххx
+    document.getElementById('id_phone_number').addEventListener('input', function (e) {
+        var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
+    // Проверяем на стороне клинта коррекность номера телефона в форме xxx-xxx-хх-хx
+    $('#create_order_form').on('submit', function (event) {
+        var phoneNumber = $('#id_phone_number').val();
+        var regex = /^\(\d{3}\) \d{3}-\d{4}$/;
+        if (!regex.test(phoneNumber)) {
+            $('#phone_number_error').show();
+            event.preventDefault();
+        } else {
+            $('#phone_number_error').hide();
+            // Очистка номера телефона от скобок и тире перед отправкой формы
+            var cleanedPhoneNumber = phoneNumber.replace(/[()\-\s]/g, '');
+            $('#id_phone_number').val(cleanedPhoneNumber);
         }
     });
 });

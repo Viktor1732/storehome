@@ -26,6 +26,9 @@ class Cart(models.Model):
         db_table = "cart"
         verbose_name = "Корзина"
         verbose_name_plural = "Корзины"
+        # Определяет порядок сортировки объектов модели по умолчанию
+        # Корзины будут сортироваться по полю 'id' в возрастающем порядке
+        ordering = ("id",)
 
     objects = CartQueryset().as_manager()
 
