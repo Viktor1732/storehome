@@ -1,52 +1,47 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from django.contrib import auth, messages
 from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 from orders.models import Order, OrderItem
 from carts.models import Cart
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 
 
-def login(request):
-    if request.method == "POST":
-        form = UserLoginForm(data=request.POST)
-        if form.is_valid():
-            username = request.POST["username"]
-            password = request.POST["password"]
-            user = auth.authenticate(username=username, password=password)
+class UserLoginView(LoginView):
+    template_name = "users/login.html"
+    form_class = UserLoginForm
+    # success_url = reverse_lazy("main:index")
 
-            session_key = request.session.session_key
+    def get_success_url(self):
+        redirect_page = self.request.POST.get("next", None)
+        if redirect_page and redirect_page != reverse("user:logout"):
+            return redirect_page
+        return reverse_lazy("main:index")
 
-            if user:
-                auth.login(request, user)
-                messages.success(request, f"Вы вошли в профиль как {username}!")
+    def form_valid(self, form):
+        session_key = self.request.session.session_key
+        user = form.get_user()
 
-                if session_key:      
-                    # Удаление старыех авторизованных пользовательских корзин
-                    forgot_carts = Cart.objects.filter(user=user)
-                    if forgot_carts.exists():
-                        forgot_carts.delete()
-                    # Добавление новой пользовательской корзины из ананимной сессии
-                    Cart.objects.filter(session_key=session_key).update(user=user)
+        if user:
+            auth.login(self.request, user)
+            if session_key:
+                forgot_carts = Cart.objects.filter(user=user)
+                if forgot_carts.exists():
+                    forgot_carts.delete()
+                Cart.objects.filter(session_key=session_key).update(user=user)
 
-                # Если параметр "next" существует и не равен маршруту выхода (logout), перенаправляем на указанную страницу
-                redirect_page = request.POST.get("next", None)
-                if redirect_page and redirect_page != reverse("user:logout"):
-                    return HttpResponseRedirect(request.POST.get("next"))
+                messages.success(self.request, f"{user.username}, Вы вошли в аккаунт!")
 
-                # Если параметра "next" нет, перенаправляем на главную страницу
-                return HttpResponseRedirect(reverse("main:index"))
-    else:
-        form = UserLoginForm()
+                return HttpResponseRedirect(self.get_success_url())
 
-    context = {
-        "title": "StoreHome - Login",
-        "form": form,
-    }
-    return render(request, "users/login.html", context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "StoreHome - Авторизация"
+        return context
 
 
 def registration(request):
@@ -91,12 +86,14 @@ def profile(request):
         form = UserProfileForm(instance=request.user)
 
     orders = (
-        Order.objects.filter(user=request.user).prefetch_related(
+        Order.objects.filter(user=request.user)
+        .prefetch_related(
             Prefetch(
                 "orderitem_set",
                 queryset=OrderItem.objects.select_related("product"),
             )
-        ).order_by("-id")
+        )
+        .order_by("-id")
     )
 
     context = {
