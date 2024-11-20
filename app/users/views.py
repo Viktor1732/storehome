@@ -5,6 +5,7 @@ from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView
 
 from orders.models import Order, OrderItem
 from carts.models import Cart
@@ -44,33 +45,32 @@ class UserLoginView(LoginView):
         return context
 
 
-def registration(request):
-    if request.POST:
-        form = UserRegistrationForm(data=request.POST)
-        if form.is_valid():
+class UserRegistrationView(CreateView):
+    template_name = "users/registration.html"
+    form_class = UserRegistrationForm
+    success_url = reverse_lazy("user:profile")
+
+    def form_valid(self, form):
+        session_key = self.request.session.session_key
+        user = form.instance
+
+        if user:
             form.save()
+            auth.login(self.request, user)
 
-            session_key = request.session.session_key
+        if session_key:
+            Cart.objects.filter(session_key=session_key).update(user=user)
 
-            user = form.instance
-            auth.login(request, user)
+        messages.success(
+            self.request,
+            f"Вы успешно зарегистрировались и вошли в профиль как {user.username}!",
+        )
+        return HttpResponseRedirect(self.get_success_url)
 
-            if session_key:
-                Cart.objects.filter(session_key=session_key).update(user=user)
-
-            messages.success(
-                request,
-                f"Вы успешно зарегистрировались и вошли в профиль как {user.username}!",
-            )
-            return HttpResponseRedirect(reverse("main:index"))
-    else:
-        form = UserRegistrationForm()
-
-    context = {
-        "title": "StoreHome - Registration",
-        "form": form,
-    }
-    return render(request, "users/registration.html", context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "StoreHome - Регистрация пользователя"
+        return context
 
 
 @login_required  # ограничение доступа для неаутентифицированных пользователей
