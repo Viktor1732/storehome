@@ -1,23 +1,22 @@
-from django.shortcuts import render
-from goods.models import Categories
+from django.views.generic import TemplateView
 
 
-def index(request):
-    categories = Categories.objects.all()
-    context = {
-        "title": "StoreHome - Главная",
-        "content": "Магазин мебелеи StoreHome",
-        "categories": categories,
-    }
+class IndexView(TemplateView):
+    template_name = "main/index.html"
 
-    return render(request, "main/index.html", context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "StoreHome - Главная"
+        context["content"] = "Магазин мебелеи StoreHome"  
+        return context
 
 
-def about(request):
-    context = {
-        "title": "StoreHome - О Нас!",
-        "content": "StoreHome - Магазин для Всех!",
-        "text_on_page": "Наш магазин действительно хорош! Мы крутые ребята!",
-    }
+class AboutView(TemplateView):
+    template_name = "main/about.html"
 
-    return render(request, "main/about.html", context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "StoreHome - О Нас!"
+        context["content"] = "StoreHome - Магазин для Всех!"
+        context["text_on_page"] = "Наш магазин действительно хорош! Мы крутые ребята!"
+        return context
